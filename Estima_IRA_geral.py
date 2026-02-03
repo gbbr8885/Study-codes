@@ -1,23 +1,27 @@
 from scipy import stats
 import numpy as np
 
-def estima_media_populacao(medias, desvios_padrao, n,nivel_confianca=0.95): #medias: lista de médias. desvios_padrao: lista de desvios padrão. n: tamanho das amoestras (número de alunos do curso)
+def estima_IRA_medio_populacional(medias, desvios_padrao, n,nivel_confianca=0.95): #medias: lista de médias. desvios_padrao: lista de desvios padrão. n: tamanho das amoestras (número de alunos do curso)
     if len(medias)>1:
 
     #estatísticas combinadas
 
-        N = len(medias)
-        total_size = N * n
+        #Média combinada
 
         media_combinada = np.mean(medias)
 
-        SS_within = (n - 1) * np.sum(np.square(desvios_padrao))
+        #Desvio padrão combinado
 
-        SS_between = n * np.sum(np.square(np.array(medias) - media_combinada))
+        N = len(medias)
+        tamanho_total = N*n
+
+        part_1 = (n - 1) * np.sum(np.square(desvios_padrao))
+
+        part_2 = n * np.sum(np.square(np.array(medias) - media_combinada))
         
-        SST = SS_within + SS_between
+        soma = part_1 + part_2
         
-        variancia_combinada = SST / (total_size - 1)
+        variancia_combinada = soma / (tamanho_total - 1)
         desvio_padrao_combinado = np.sqrt(variancia_combinada)
     
     else:
@@ -29,7 +33,7 @@ def estima_media_populacao(medias, desvios_padrao, n,nivel_confianca=0.95): #med
 
     gl=n-1
     t_student=stats.t.ppf((1-nivel_confianca)/2,gl)
-    erro=t_student*desvio_padrao_combinado/np.sqrt(n)
+    erro=t_student*desvio_padrao_combinado/np.sqrt(tamanho_total)
     limite_inferior=media_combinada-erro
     limite_superior=media_combinada+erro
 

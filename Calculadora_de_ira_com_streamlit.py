@@ -213,18 +213,18 @@ if historico_nt is not None:
 
             desvios_padrao.append(i)
 
-        for i in range(id.shape[0]):
+        for i in range(id.shape[0]-1):
 
                 m=id['Média'][i]
                 dp=id['Desvio-padrão'][i]
 
                 irasg.append(6+2*((irasi[i]-m)/dp))
 
-        from Estima_IRA_geral import estima_media_populacao as smp
+        from Estima_IRA_geral import estima_IRA_medio_populacional as eimp
 
         n=vagas*(n_semestres/2)/3
 
-        media_combinada,desvio_padrao_combinado,limite_inferior_media,limite_superior_media=smp(medias,desvios_padrao,n)
+        media_combinada,desvio_padrao_combinado,limite_inferior_media,limite_superior_media=eimp(medias,desvios_padrao,n)
 
         irag_estimado_1=6+2*((irai_ultimo_semestre-limite_inferior_media)/desvio_padrao_combinado)
         irag_estimado_2=6+2*((irai_ultimo_semestre-limite_superior_media)/desvio_padrao_combinado)
